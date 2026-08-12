@@ -56,6 +56,17 @@ function extraerIdDriveDesdeUrl(url) {
   return match ? match[0] : null;
 }
 
+function esJpgOPng(buffer) {
+  const esJpg = buffer.length >= 3 && buffer[0] === 0xff && buffer[1] === 0xd8 && buffer[2] === 0xff;
+  const esPng =
+    buffer.length >= 8 &&
+    buffer[0] === 0x89 &&
+    buffer[1] === 0x50 &&
+    buffer[2] === 0x4e &&
+    buffer[3] === 0x47;
+  return esJpg || esPng;
+}
+
 async function descargarYOptimizarFoto(urlFoto, idObra) {
   const fileId = extraerIdDriveDesdeUrl(urlFoto);
   const destino = path.join(IMG_DIR, `${idObra}.jpg`);
@@ -78,13 +89,25 @@ async function descargarYOptimizarFoto(urlFoto, idObra) {
   }
   const buffer = Buffer.from(await res.arrayBuffer());
 
+  if (!esJpgOPng(buffer)) {
+    console.warn(
+      `⚠️  La descarga de ${idObra}.jpg no parece ser una imagen válida (probablemente Drive devolvió una página HTML en vez de la foto). Se omite.`
+    );
+    return null;
+  }
+
   fs.mkdirSync(IMG_DIR, { recursive: true });
-  // Optimización automática: recorte proporcional, ancho máx. 1600px, calidad 80.
-  await sharp(buffer)
-    .rotate() // corrige orientación según metadata del celular
-    .resize({ width: 1600, withoutEnlargement: true })
-    .jpeg({ quality: 80 })
-    .toFile(destino);
+  try {
+    // Optimización automática: recorte proporcional, ancho máx. 1600px, calidad 80.
+    await sharp(buffer)
+      .rotate() // corrige orientación según metadata del celular
+      .resize({ width: 1600, withoutEnlargement: true })
+      .jpeg({ quality: 80 })
+      .toFile(destino);
+  } catch (err) {
+    console.warn(`⚠️  No se pudo procesar la foto de ${idObra}.jpg: ${err.message}`);
+    return null;
+  }
 
   return `/img/${idObra}.jpg`;
 }
