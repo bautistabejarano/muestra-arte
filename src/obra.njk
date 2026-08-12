@@ -9,7 +9,7 @@ eleventyComputed:
   titulo: "{{ obra.titulo }}"
 ---
 <main class="ficha">
-  <img class="ficha__foto" src="{{ obra.foto }}" alt="{{ obra.titulo }}" loading="eager">
+  <img class="ficha__foto" src="{{ obra.foto | url }}" alt="{{ obra.titulo }}" loading="eager">
 
   <div class="ficha__contenido">
     <h1 class="ficha__titulo">{{ obra.titulo }}{% if obra.anio %}, {{ obra.anio }}{% endif %}</h1>
@@ -35,6 +35,6 @@ eleventyComputed:
     </a>
     {% endif %}
 
-    <a class="ficha__volver" href="/">Ver la muestra completa</a>
+    <a class="ficha__volver" href="{{ '/' | url }}">Ver la muestra completa</a>
   </div>
 </main>

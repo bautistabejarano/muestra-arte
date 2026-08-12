@@ -4,6 +4,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "src/img": "img" });
 
   return {
+    pathPrefix: "/muestra-arte/",
     dir: {
       input: "src",
       output: "_site",
