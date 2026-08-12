@@ -1,0 +1,36 @@
+name: Generar códigos QR
+
+on:
+  workflow_dispatch:
+
+jobs:
+  generar-qrs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Leer la planilla actual
+        env:
+          CSV_URL_OBRAS: ${{ secrets.CSV_URL_OBRAS }}
+          CSV_URL_RESPUESTAS: ${{ secrets.CSV_URL_RESPUESTAS }}
+          CSV_URL_ARTISTAS: ${{ secrets.CSV_URL_ARTISTAS }}
+        run: npm run actualizar-datos
+
+      - name: Generar los códigos QR
+        run: npm run generar-qrs
+
+      - name: Dejar los QR listos para descargar
+        uses: actions/upload-artifact@v4
+        with:
+          name: codigos-qr
+          path: qrs
+          retention-days: 90
