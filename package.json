@@ -1,0 +1,16 @@
+{
+  "name": "muestra-arte",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sitio de fichas de obra para muestra de arte, generado automáticamente desde Google Sheets.",
+  "scripts": {
+    "actualizar-datos": "node scripts/actualizar-datos.js",
+    "build": "npm run actualizar-datos && eleventy",
+    "serve": "eleventy --serve"
+  },
+  "dependencies": {
+    "@11ty/eleventy": "^2.0.1",
+    "csv-parse": "^5.5.6",
+    "sharp": "^0.33.4"
+  }
+}

@@ -1,0 +1,67 @@
+name: Publicar sitio
+
+on:
+  # Publica sola cada 30 minutos
+  schedule:
+    - cron: "*/30 * * * *"
+  # Botón "Run workflow" en GitHub = publicar ahora mismo
+  workflow_dispatch:
+  # También publica cada vez que se sube un cambio al código del sitio
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build-y-publicar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar el repositorio
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Leer la planilla y preparar las fotos
+        env:
+          CSV_URL_OBRAS: ${{ secrets.CSV_URL_OBRAS }}
+          CSV_URL_RESPUESTAS: ${{ secrets.CSV_URL_RESPUESTAS }}
+          CSV_URL_ARTISTAS: ${{ secrets.CSV_URL_ARTISTAS }}
+        run: npm run actualizar-datos
+
+      - name: Guardar los IDs y fotos nuevas en el repositorio
+        run: |
+          git config user.name "Publicación automática"
+          git config user.email "actions@github.com"
+          git add data/ids.json src/img
+          if ! git diff --cached --quiet; then
+            git commit -m "Actualizar datos de obras [automático]"
+            git push
+          else
+            echo "No hay obras nuevas ni fotos nuevas."
+          fi
+
+      - name: Generar el sitio
+        run: npx eleventy
+
+      - name: Preparar la publicación
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Publicar en GitHub Pages
+        uses: actions/deploy-pages@v4

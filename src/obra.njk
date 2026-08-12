@@ -1,0 +1,40 @@
+---
+layout: layouts/base.njk
+pagination:
+  data: obras
+  size: 1
+  alias: obra
+permalink: "/{{ obra.id }}/"
+eleventyComputed:
+  titulo: "{{ obra.titulo }}"
+---
+<main class="ficha">
+  <img class="ficha__foto" src="{{ obra.foto }}" alt="{{ obra.titulo }}" loading="eager">
+
+  <div class="ficha__contenido">
+    <h1 class="ficha__titulo">{{ obra.titulo }}{% if obra.anio %}, {{ obra.anio }}{% endif %}</h1>
+
+    {% if obra.descripcion %}
+    <p class="ficha__descripcion">{{ obra.descripcion }}</p>
+    {% endif %}
+
+    <p class="ficha__tecnica">
+      {%- if obra.tecnica %}{{ obra.tecnica }}{% endif -%}
+      {%- if obra.materiales %} · {{ obra.materiales }}{% endif -%}
+      {%- if obra.dimensiones %} · {{ obra.dimensiones }}{% endif -%}
+    </p>
+
+    <p class="ficha__estado-precio">
+      <span class="ficha__estado ficha__estado--{{ obra.estado | lower }}">{{ obra.estado }}</span>
+      {% if obra.precio %}<span class="ficha__precio">${{ obra.precio }}</span>{% endif %}
+    </p>
+
+    {% if obra.artistaWhatsappLink %}
+    <a class="ficha__contacto" href="{{ obra.artistaWhatsappLink }}" target="_blank" rel="noopener">
+      Contactar al artista
+    </a>
+    {% endif %}
+
+    <a class="ficha__volver" href="/">Ver la muestra completa</a>
+  </div>
+</main>

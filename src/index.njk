@@ -1,0 +1,15 @@
+---
+layout: layouts/base.njk
+titulo: La muestra
+---
+<main class="galeria">
+  <h1 class="galeria__titulo">La muestra</h1>
+  <div class="galeria__grilla">
+    {% for obra in obras %}
+    <a class="galeria__item" href="/{{ obra.id }}/">
+      <img src="{{ obra.foto }}" alt="{{ obra.titulo }}" loading="lazy">
+      <span>{{ obra.titulo }}</span>
+    </a>
+    {% endfor %}
+  </div>
+</main>

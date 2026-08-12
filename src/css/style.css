@@ -1,0 +1,147 @@
+:root {
+  --blanco: #ffffff;
+  --negro: #111111;
+  --gris: #6b6b6b;
+  --gris-claro: #e4e4e4;
+  --serif: Georgia, "Iowan Old Style", "Times New Roman", serif;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+  --espacio: clamp(1.25rem, 4vw, 3rem);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--blanco);
+  color: var(--negro);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--negro); outline-offset: 3px; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+
+/* ---------- Ficha de obra ---------- */
+
+.ficha {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--espacio);
+}
+
+.ficha__foto {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
+.ficha__contenido {
+  margin-top: calc(var(--espacio) * 1.1);
+}
+
+.ficha__titulo {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(1.5rem, 4vw, 2.1rem);
+  line-height: 1.25;
+  margin: 0 0 1.25rem;
+  letter-spacing: 0.01em;
+}
+
+.ficha__descripcion {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--negro);
+  max-width: 52ch;
+  margin: 0 0 1.5rem;
+}
+
+.ficha__tecnica {
+  font-size: 0.85rem;
+  color: var(--gris);
+  margin: 0 0 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--gris-claro);
+}
+
+.ficha__estado-precio {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+  margin: 0 0 2rem;
+}
+
+.ficha__estado {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.72rem;
+  padding: 0.3em 0.7em;
+  border: 1px solid var(--negro);
+}
+
+.ficha__estado--reservada { color: var(--gris); border-color: var(--gris); }
+.ficha__estado--vendida { color: var(--gris); border-color: var(--gris-claro); text-decoration: line-through; }
+
+.ficha__precio { font-weight: 600; }
+
+.ficha__contacto {
+  display: inline-block;
+  text-decoration: none;
+  background: var(--negro);
+  color: var(--blanco);
+  font-size: 0.9rem;
+  padding: 0.85em 1.6em;
+  letter-spacing: 0.02em;
+}
+
+.ficha__volver {
+  display: block;
+  margin-top: 2.5rem;
+  font-size: 0.8rem;
+  color: var(--gris);
+  text-decoration: none;
+}
+.ficha__volver:hover { color: var(--negro); }
+
+/* ---------- Galería / índice ---------- */
+
+.galeria {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: var(--espacio);
+}
+
+.galeria__titulo {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 1.4rem;
+  margin: 0 0 var(--espacio);
+}
+
+.galeria__grilla {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1.5rem;
+}
+
+.galeria__item {
+  text-decoration: none;
+  color: var(--negro);
+  font-size: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.galeria__item img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
