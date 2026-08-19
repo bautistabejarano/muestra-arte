@@ -26,7 +26,7 @@ eleventyComputed:
 
     <p class="ficha__estado-precio">
       <span class="ficha__estado ficha__estado--{{ obra.estado | lower }}">{{ obra.estado }}</span>
-      {% if obra.precio %}<span class="ficha__precio">${{ obra.precio }}</span>{% endif %}
+      {% if obra.precio %}<span class="ficha__precio">{{ obra.precio }} USD</span>{% endif %}
     </p>
 
     {% if obra.artistaWhatsappLink %}
